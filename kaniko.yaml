@@ -6,12 +6,10 @@ spec:
   containers:
   - name: kaniko
     image: gcr.io/kaniko-project/executor:latest
-    args: ["--dockerfile=/workspace/Dockerfile","--context=dir://workspace","--destination==192.168.5.70:5000/myimage:v1"]
+    args: ["--context=git://github.com/Mohit-Verma-1688/Kaniko-demo","--skip-tls-verify","--destination=192.168.5.70:5000/myimage:v1"]
     volumeMounts:
     - name: kaniko-secret
       mountPath: /kaniko/.docker
-    - name: dockerfile-storage
-      mountPath: /workspace
   volumes:
   - name: kaniko-secret
     secret:
@@ -19,6 +17,3 @@ spec:
       items:
         - key: .dockerconfigjson
           path: config.json
-  - name: dockerfile-storage
-    persistentVolumeClaim:
-       claimName: dockerfile-claim
